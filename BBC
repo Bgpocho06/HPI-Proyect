@@ -1,0 +1,43 @@
+# Module datetime allows to make operations with dates and time metrics
+from datetime import datetime
+
+# Auxiliar function that calculates the difference of time between a
+# given date (string input) and the current date
+def date_difference(date):
+    # Obtain current date. This information's type is "datetime"
+    now = datetime.now()
+    # Transform the string input into a datetime type information
+    date_obj = datetime.strptime(date, "%Y-%m-%d, %H:%M")
+    # Calculate the difference of time between dates in days.
+    date_difference = (date_obj - now).total_seconds() / (3600 * 24) 
+    # The function returns the difference in days
+    return date_difference
+
+# Function that suggests and order to do a series of tasks. The inputs are a
+# dictionary and (optional) the importance given to the time available for 
+# finishing the task (from 0 to 1).
+def prioritize(tasks, date_imp=0.75):
+    # Difficulty importance is calculated according to the time importance
+    dfct_imp = 1 - date_imp
+    # An initial message is displayed
+    print("You should consider this order of priority:\n" + "-" * 43)
+    # List which will contain the tasks and their evaluated importance in tuples
+    importances = []
+    # Loop through the elements of the dictionary 
+    for task, conditions in tasks.items():
+        # Unpack the conditions (as it is a list) in deadlines and difficulties
+        deadline, dfct = conditions
+        # Calculate the amount of time available for accomplishing the task
+        time_period = date_difference(deadline)
+        # Expression to ponderate the conditions. Gives a result from 0 to 1
+        ponderation = date_imp * (1 / (1 + time_period)) + dfct_imp / 10 * dfct
+        # Add the tasks' names and their importances to the list in tuples. 
+        # Do it in inverse order "(imp, task)" so "sort()" compares ponderations
+        importances.append((ponderation, task))
+    # Sort the list from the most to the least important task
+    importances.sort(reverse=True)
+    # Loop through the elements of the list. Use "enumerate()" to keep count 
+    # of the order, starting with 1 (not 0)
+    for n, tasks in enumerate(importances, start=1):
+        # Display the suggestion
+        print(f"{n}.- {tasks[1]}")
