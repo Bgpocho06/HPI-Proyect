@@ -20,11 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-tasks = {
-    "HPI Project": ["2024-11-21, 16:00", 6],
-    "MD Exam": ["2025-01-11, 11:00", 10],
-    "AG Questionnaires": ["2024-06-07, 16:00", 3]
-}
 
 from datetime import datetime
 
@@ -46,5 +41,3 @@ def prioritize(tasks, date_imp=0.75):
     importances.sort(reverse=True)
     for n, tasks in enumerate(importances, start=1):
         print(f"{n}.- {tasks[1]}")
-
-prioritize(tasks)
